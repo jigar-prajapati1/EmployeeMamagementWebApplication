@@ -1,0 +1,86 @@
+﻿@model EmployeeModels.EmployeeDetail
+
+@{
+    ViewBag.Title = "GetAllEmployee";
+}
+
+<h2>GetAllEmployee</h2>
+
+<div>
+    <h4>EmployeeDetail</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProfilePicture)
+        </dt>
+
+        <dd>
+
+            <img src="@Url.Content("~/Images/" + Model.ProfilePicture)" height="50" width="50" />
+
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DesignationId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DesignationId)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Salary)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Salary)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Designation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Designation)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "EditEmployee", new { id = Model.Id }) |
+    @Html.ActionLink("Delete", "DeleteEmp", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "GetAll")
+</p>
