@@ -213,7 +213,7 @@
       <Name>EmployeeModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\EmployeeRepository\EmployeeRepositorys.csproj">
-      <Project>{588b9fd9-49d6-4bb8-b355-2445bedf3ef8}</Project>
+      <Project>{588B9FD9-49D6-4BB8-B355-2445BEDF3EF8}</Project>
       <Name>EmployeeRepositorys</Name>
     </ProjectReference>
     <ProjectReference Include="..\EmpServices\EmployeeServices.csproj">

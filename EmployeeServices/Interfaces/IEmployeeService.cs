@@ -10,9 +10,8 @@ namespace Repository
         List<EmployeeDetail> GetAllEmployee();
         List<EmployeeDesignation> GetDesignations();
         EmployeeDetail GetEmployeeById(int? id);
-      
         void DeleteEmployee(int? id);
-        void UpdateEmployee(EmployeeDetail empDetail);
+        void UpdateEmployee(EmployeeDetail empDetail);r
         void AddEmployee(EmployeeDetail empDetail);
        
     }

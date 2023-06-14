@@ -13,9 +13,9 @@ namespace EmployeeManagementMVC.Controllers
     {
         private readonly IEmployeeService _employeeService;
 
-        public EmployeeController(IEmployeeService employeeservice)
+        public EmployeeController(IEmployeeService employeeService)
         {
-            _employeeService = employeeservice;
+            _employeeService = employeeService;
         }
         public EmployeeController()
         {
@@ -25,18 +25,25 @@ namespace EmployeeManagementMVC.Controllers
         [HttpGet]
         public ActionResult GetAllEmployee(int? id)
         {
-            if (id == null)
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return BadRequest();
+                }
+                var employees = _employeeService.GetEmployeeById(id);
+                if (employees == null)
+                {
+                    return NotFound();
+                }
+                ViewBag.AlertMsg = "Employee Get successfully";
             }
-            var employees = _employeeService.GetEmployeeById(id);
-            if (employees == null)
+            catch (Exception ex)
             {
-                return HttpNotFound();
+                ViewBag.AlertMsg = "Failed to Get employee";
             }
             return View(employees);
         }
-
         [HttpGet]
         public ActionResult AddEmployee()
         {
@@ -53,70 +60,69 @@ namespace EmployeeManagementMVC.Controllers
                     {
                         //save image in server
                         HttpPostedFileBase file = Request.Files[0];
-                        string fname = file.FileName;
+                        string firstname = file.FileName;
                         string path = Server.MapPath("~/Images/");
-                        string st = path + fname;
-                        file.SaveAs(path + fname);
-                        empDetail.ProfilePicture = fname;
+                        string st = path + firstname;
+                        file.SaveAs(path + firstname);
+                        empDetail.ProfilePicture = firstname;
                     }
                     catch (System.Exception ex)
                     {
-                        return Json(ex.Message);
+                        return (ex.Message);
                     }
                 }
                 //pass details to repository
                 _employeeService.AddEmployee(empDetail);
 
                 return RedirectToAction("GetAll");
-            }
-         
-
+        }
         [HttpGet]
         public ActionResult EditEmployee(int? id )
         {
-            if (id == null)
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return BadRequest();
+                }
+                var employees = _employeeService.GetEmployeeById(id);
+                if (employees == null)
+                {
+                    return NotFound();
+                }
+                return View(employees);
             }
-            var employees = _employeeService.GetEmployeeById(id);
-            if (employees == null)
+            catch (Exception ex)
             {
-                return HttpNotFound();
+                return View("Error", new { ErrorMessage = "An error occurred while processing the request." });
             }
-            return View(employees);
         }
-
+    }
         [HttpPost]
         public ActionResult EditEmployee( EmployeeDetail detail)
         {
-
-                if (Request.Files.Count > 0)
-                {
-                    try
-                    {
-                        // Save image on the server
-                        HttpPostedFileBase file = Request.Files[0];
-                        string fname = file.FileName;
-                        string path = Server.MapPath("~/Images/");
-                        string st = path + fname;
-                        file.SaveAs(path + fname);
-                        detail.ProfilePicture = fname;
-                    }
-                    catch (System.Exception ex)
-                    {
-                        return Json(ex.Message);
-                    }
-                }
-
-                // Update employee details using the service
-                _employeeService.UpdateEmployee(detail);
-
-
-                return RedirectToAction("GetAll");
+        try
+        {
+            if (Request.Files.Count > 0)
+            {
+                // Save image on the server
+                HttpPostedFileBase file = Request.Files[0];
+                string firstname = file.FileName;
+                string path = Server.MapPath("~/Images/");
+                string st = path + firstname;
+                file.SaveAs(path + firstname);
+                detail.ProfilePicture = firstname;
             }
-
-            
-
+            // Update employee details using the service
+            _employeeService.UpdateEmployee(detail);
+            return RedirectToAction("GetAll");
+        }
+        catch (Exception ex)
+        {
+            ViewBag.ErrorMessage = "An error occurred while processing the request.";
+            return View("Error");
+        }
+}
         [HttpGet]
         public ActionResult DeleteEmp(int? id)
         {
@@ -129,20 +135,22 @@ namespace EmployeeManagementMVC.Controllers
             {
                 ViewBag.AlertMsg = "Failed to delete employee details";
             }
-
             return RedirectToAction("GetAll");
         }
-
         [HttpGet]
         public ActionResult GetAll()
         {
-
+        try
+        {
             List<EmployeeDetail> employees = _employeeService.GetAllEmployee();
-
-            return View("GetAll", employees);
-
+            ViewBag.AlertMsg = "Employee Get successfully";
         }
-     
+        catch
+        {
+            ViewBag.AlertMsg = "Failed to GetAll employee ";
+        }
+            return View("GetAll", employees);
+        }
     }
 }
 

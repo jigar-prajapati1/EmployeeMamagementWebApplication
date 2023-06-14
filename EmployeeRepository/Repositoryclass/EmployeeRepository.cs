@@ -14,36 +14,20 @@ namespace EmployeeRepositorys
     public class EmployeeRepository:IEmployeeRepository
     {
         private readonly string conn;
-        public EmployeeRepository()
+        
+        public EmployeeRepository(string connectionString)
         {
-            conn = "Data Source=localhost/SQLEXPRESS;Initial Catalog=EmpDb;Integrated Security=True";
+            conn = connectionString;
         }
-        //public EmployeeRepository(string connectionString)
-        //{
-        //    conn = connectionString;
-        //}
 
         public List<EmpDesignationViewModel> GetDesignations()
         {
-            try
-            {
-                using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+               using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
                 {
                     return connection.Query<EmpDesignationViewModel>("GetEmployeesDesignation", commandType: CommandType.StoredProcedure).ToList();
                 }
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception (log it, display an error message, etc.)
-                // You can also rethrow the exception if you want it to be handled higher up in the call stack
-                throw;
-            }
-            //using (IDbConnection connection = new SqlConnection(conn))
-            //{
-
-            //    string query = "SELECT * FROM EmployeeDesignations";
-            //    return connection.Query<EmployeeDesignation>(query).ToList();
-            //}
+            
+           
         }
 
         public List<EmpDetailViewModel> AddEmployee(EmpDetailViewModel employee)
